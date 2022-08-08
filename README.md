@@ -70,7 +70,7 @@ CREDITS-Nitu Kumari
 ![/SIGN UP](https://github.com/priyanshusingh302/MetaCommerceWebsite/blob/main/asset/login.png)
 
 ## PRODUCT PAGE
-![/SIGN UP](https://github.com/priyanshusingh302/MetaCommerceWebsite/blob/main/asset/product.png)
+![/SIGN UP](https://github.com/priyanshusingh302/MetaCommerceWebsite/blob/main/asset/products.png)
 
 ## VR PAGE
 ![/SIGN UP](https://github.com/priyanshusingh302/MetaCommerceWebsite/blob/main/asset/vr.png)
