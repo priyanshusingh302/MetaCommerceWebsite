@@ -81,8 +81,8 @@ CREDITS-Nitu Kumari
 ## LOADING PAGE
 ![/SIGN UP](https://github.com/priyanshusingh302/MetaCommerceWebsite/blob/main/asset/loading.png)
 
-## METACVERSE PAGE
-![/SIGN UP](https://github.com/priyanshusingh302/MetaCommerceWebsite/blob/main/asset/mtaverse.png)
+## METAVERSE PAGE
+![/SIGN UP](https://github.com/priyanshusingh302/MetaCommerceWebsite/blob/main/asset/metaverse.png)
 
 ## 3D MODEL PAGE
 ![/SIGN UP](https://github.com/priyanshusingh302/MetaCommerceWebsite/blob/main/asset/car.png)
