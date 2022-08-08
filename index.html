@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>MetaCreativity</title>
+  <meta name="description" content="MetaCreativity">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  <!-- <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v$npm_package_version/dist/aframe-physics-system.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>
+  <script src="http://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+  <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
+  <!-- <script src="https://rawgit.com/gasolin/aframe-href-component/master/dist/aframe-href-component.min.js"></script> -->
+  <script src="https://unpkg.com/aframe-event-set-component@4.1.2/dist/aframe-event-set-component.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    AFRAME.registerComponent('collision-wire', {
+      schema: {
+        element: { type: 'string' }
+      },
+      init: function () {
+        let el = this.el;
+        let element = this.data.element;
+
+        el.addEventListener("collidestart", function (event) {
+          if (event.detail.targetEl.id === element) {
+            el.setAttribute('material', { 'wireframe': true });
+          };
+        });
+        el.addEventListener("collideend", function (event) {
+          if (event.detail.targetEl.id === element) {
+            el.setAttribute('material', { 'wireframe': false });
+          };
+        });
+      }
+    });
+
+  </script>
+  <script>
+
+    AFRAME.registerComponent("add_to_cart", {
+      schema: {
+        product_id: { type: "string", default: "default" },
+        name: { type: "string", default: "default" },
+        price: { type: "string", default: "default" },
+        img_link: { type: "string", default: "default" },
+      },
+      init: function () {
+
+        var data = this.data;
+        var el = this.el;
+        var atc_notification = document.querySelector("#add_to_cart_notification");
+        el.addEventListener("click", function () {
+          atc_notification.setAttribute("visible", true);
+          setTimeout(() => {
+            atc_notification.setAttribute("visible", false);
+          }, 1000);
+
+          const DataToSend = {
+            "cartItems": [
+              {
+                "product": data.product_id,
+                "name": data.name,
+                "imageLink": data.img_link,
+                "price": data.price,
+                "tagsUI": ["car", "3D"]
+              }
+            ]
+          }
+          fetch('https://meta-creativity.herokuapp.com/api/user/cart/addtocart', {
+            method: 'POST',
+            body: JSON.stringify({
+              DataToSend
+            }),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            }
+          })
+        });
+      },
+    });
+  </script>
+  <script>
+    AFRAME.registerComponent('explode', {
+      init: function () {
+        var el = this.el;
+        el.addEventListener("collidestart", function () {
+          console.log('collision detected');
+          el.parentElement.removeChild(el);
+        });
+      }
+    });
+  </script>
+  <!-- <script>
+    AFRAME.registerComponent('link', {
+      schema: { default: '' },
+
+      init: function () {
+        var url = this.data;
+        this.el.addEventListener('click', function () {
+          window.location.href = url;
+        });
+      }
+    });
+  </script> -->
+  <script>
+    var cnt = 0;
+    AFRAME.registerComponent('loader', {
+      schema: {
+        model_id: { type: "string", default: "default" }
+      },
+      init: function () {
+        let m_id = this.data.model_id;
+        let loader = document.querySelector(m_id)
+        let metaverse = document.querySelector("#scene")
+        this.el.addEventListener('model-loaded', e => {
+          console.log('loaded');
+          cnt++;
+          console.log(m_id);
+          if (cnt == 9) {
+            metaverse.setAttribute("visible", true);
+          }
+        })
+      }
+    })
+  </script>
+</head>
+
+<body>
+  <main>
+    <div class="preloader">
+      <div class="preloader__square"></div>
+      <div class="preloader__square"></div>
+      <div class="preloader__square"></div>
+      <div class="preloader__square"></div>
+    </div>
+    <div class="status">Loading<span class="status__dot">.</span><span class="status__dot">.</span><span
+        class="status__dot">.</span></div>
+  </main>
+
+
+  <a-scene id="scene" visible="false" loading-screen="dotsColor: red; backgroundColor: black"
+    environment="grid: none; ground: spikes; lighting: distant; preset: threetowers; playArea: 1.1; groundTexture: walkernoise; dressingAmount: 5; dressing: towers; active: false; dressingUniformScale: false; seed: 1; groundYScale: 5; shadow: false; flatShading: false"
+    fog="density: 0; far: 84; color: #b3a456; type: linear; near: 10"
+    physics="driver: ammo; debug: false; debugDrawMode: 3;" device-orientation-permission-ui="enabled: false">
+
+    <!-- assets -->
+    <a-assets>
+      <a-mixin id="cube" geometry="primitive: box"></a-mixin>
+      <a-mixin id="hoverColor" event-set__mouseenter="material.color: #CC435F"></a-mixin>
+      <a-mixin id="selectColor" event-set__click="material.color: #876A96"></a-mixin>
+      <a-mixin id="leaveColor" event-set__mouseleave="material.color: #9DE0AD"></a-mixin>
+      <a-mixin id="red" material="color: #F35F5F"></a-mixin>
+      <a-mixin id="green" material="color: #9DE0AD"></a-mixin>
+      <a-mixin id="blue" material="color: #36A3EB"></a-mixin>
+      <a-mixin id="yellow" material="color: #F1EA65"></a-mixin>
+      <a-mixin id="sphere" geometry="primitive: sphere"></a-mixin>
+    </a-assets>
+
+    <!-- ground -->
+    <a-grid id="grid" visible="false" position="0 0 0" material="visible: false"
+      geometry="primitive: circle; radius: 500; segments: 64; skipCache: false" ammo-body="type: static"
+      ammo-shape="type: box; sphereRadius: NaN"></a-grid>
+
+    <!-- wall -->
+    <a-sphere id="wall" rotation="90 90 0" ammo-body="type: static" ammo-shape="type: hacd; sphereRadius: NaN"
+      material="transparent: false; visible: false" geometry="radius: 50; primitive: torus; radiusTubular: 3"
+      position="0 0 0"></a-sphere>
+
+    <!-- Camera rig, with a cylynder to give an idea of its "size"-->
+    <a-entity movement-controls="fly: false; speed: 0.5; constrainToNavMesh: true" position="0 0 0"
+      geometry="primitive: cylinder; height: 2; radius: 0.8"
+      material="color: green; wireframe: true; transparent: false; visible: false" id="cam" ammo-body="type: kinematic;"
+      ammo-shape="type: cylinder; sphereRadius: NaN; halfExtents: 0.800000011920929 1 0.800000011920929">
+      <a-entity id="camera" rotation="0 0 0" look-controls="pointerLockEnabled: true" camera="fov: 75"
+        position="0 1.6 0" look-controls>
+        <a-entity id="add_to_cart_notification" visible="false" scale="4 4.9901 0.00001" position="0 2.85174 -4.97232"
+          text="value:ITEM SUCCESSFULLY ADDED TO CART; color: #ffffff;shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/aladin/Aladin-Regular.json;; anchor: align; baseline: bottom; letterSpacing: 1; wrapPixels: 0; yOffset: 0; xOffset: 0; zOffset: 0; align: center; transparent: true; opacity: 1">
+        </a-entity>
+        <a-cursor id="cursor" rotation="0 0 0" line="end: 577.3502691896258 577.3502691896258 577.3502691896258"
+          raycaster="objects: .intersectable; direction: 0 0 -1; enabled: true; showLine: true"
+          cursor="rayOrigin: entity"></a-cursor>
+      </a-entity>
+    </a-entity>
+
+    <!-- light -->
+    <a-entity id="LIGHT">
+      <a-gltf-model id="light1" loader="model_id: #light1" ammo-shape="sphereRadius: NaN; type: hacd" ammo-body="type: static" position="30 0 0"
+        scale="0.005 0.005 0.005" gltf-model="assets\street_light/scene.gltf"></a-gltf-model>
+      <a-entity id="source1" light="castShadow: true; decay: 2; intensity: 1; type: point; distance: 100"
+        position="24.73982 18 0"></a-entity>
+      <a-sphere id="bulb1" material="emissive: #ffffff; emissiveIntensity: 100" geometry="radius: 0.25"
+        position="25.15199 18.3746 0.23318"></a-sphere>
+
+      <a-gltf-model id="light2" rotation="0 -90 0" position="0 0 30" scale="0.005 0.005 0.005"
+        gltf-model="assets\street_light/scene.gltf"></a-gltf-model>
+      <a-entity id="source2" light="castShadow: true; decay: 2; intensity: 1; type: point; distance: 100"
+        position="0 18 25"></a-entity>
+      <a-sphere id="bulb2" material="emissive: #ffffff; emissiveIntensity: 100" geometry="radius: 0.25"
+        position="-0.23318 18.3746 25.15199"></a-sphere>
+
+      <a-gltf-model id="light3" rotation="0 180 0" position="-30 0 0" scale="0.005 0.005 0.005"
+        gltf-model="assets\street_light/scene.gltf"></a-gltf-model>
+      <a-entity id="source3" light="castShadow: true; decay: 2; intensity: 1; type: point; distance: 100"
+        position="-25.20029 18 0"></a-entity>
+      <a-sphere id="bulb3" material="emissive: #ffffff; emissiveIntensity: 100" geometry="radius: 0.25"
+        position="-25.15199 18.3746 -0.23318"></a-sphere>
+
+      <a-gltf-model id="light4" rotation="0 90 0" position="0 0 -30" scale="0.005 0.005 0.005"
+        gltf-model="assets\street_light/scene.gltf"></a-gltf-model>
+      <a-entity id="source4" light="castShadow: true; decay: 2; intensity: 1; type: point; distance: 100"
+        position="0 18 -25"></a-entity>
+      <a-sphere id="bulb4" material="emissive: #ffffff; emissiveIntensity: 100" geometry="radius: 0.25"
+        position="0.23318 18.3746 -25.15199"></a-sphere>
+    </a-entity>
+
+    <!-- open cart -->
+    <a-box id="open_cart" rotation="15 0 0" scale="5 2 0.01" class="intersectable"
+      mixin="green cube hoverColor selectColor leaveColor" position="-5 8 -10"
+      link="href:https://majestic-kitsune-23701c.netlify.app/Cart">
+      <a-entity id="text" scale="4 10.93 0.00001" position="0 -0.68 1"
+        text="value:OPEN CART; color: #000000; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/aladin/Aladin-Regular.json;; anchor: align; baseline: bottom; letterSpacing: 1; wrapPixels: 0; yOffset: 0; xOffset: -0.001; zOffset: 0; align: center">
+      </a-entity>
+    </a-box>
+    <!-- exit -->
+    <a-box id="exit" rotation="14.999999999999998 0 0" scale="5 2 0.01" class="intersectable"
+      mixin="green cube hoverColor selectColor leaveColor" position="5 8 -10"
+      link="href: https://majestic-kitsune-23701c.netlify.app/">
+      <a-entity id="txt" scale="4 10.93 0.00001" position="0 -0.68 1"
+        text="value:EXIT :{; color: #000000; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/aladin/Aladin-Regular.json;; anchor: align; baseline: bottom; letterSpacing: 1; wrapPixels: 0; yOffset: 0; xOffset: -0.001; zOffset: 0; align: center">
+      </a-entity>
+    </a-box>
+    <!-- stage -->
+    <!-- 1 -->
+    <a-entity id="STAGE">
+      <a-cylinder id="stage1" material="color: #737373" ammo-body="type: static"
+        ammo-shape="sphereRadius: NaN; type: cylinder; fit: manual; halfExtents: 5 5 5" geometry="radius: 5"
+        position="20 0 -20">
+        <a-box id="link1" add_to_cart="name: car1; product_id: carproductid1; price: 999999" rotation="0 -45 0"
+          scale="1 0.25 0.01" class="intersectable" mixin="green cube hoverColor selectColor leaveColor"
+          position="-1.98186 1.78 -1.87007">
+          <a-entity id="text1" scale="5 6 0.00001" position="0 -0.6 1"
+            text="value: ADD TO \n CART; color: #000000; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/aladin/Aladin-Regular.json;; anchor: align; baseline: bottom; letterSpacing: 1; wrapPixels: 0; yOffset: 0; xOffset: -0.001; zOffset: 0; align: center">
+          </a-entity>
+        </a-box>
+      </a-cylinder>
+      <!-- 2 -->
+      <a-cylinder id="stage2" material="color: #737373" ammo-body="type: static"
+        ammo-shape="sphereRadius: NaN; type: cylinder; fit: manual; halfExtents: 5 5 5" geometry="radius: 5"
+        position="0 0 -20">
+        <a-box id="link2" add_to_cart="name: car2; product_id: carproductid2; price: 999999" scale="1 0.25 0.01"
+          class="intersectable" mixin="green cube hoverColor selectColor leaveColor" position="-2.84846 1.78 0.7503">
+          <a-entity id="text2" scale="5 6 0.00001" position="0 -0.6 1"
+            text="value: ADD TO \n CART; color: #000000; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/aladin/Aladin-Regular.json;; anchor: align; baseline: bottom; letterSpacing: 1; wrapPixels: 0; yOffset: 0; xOffset: -0.001; zOffset: 0; align: center">
+          </a-entity>
+        </a-box>
+      </a-cylinder>
+      <!-- 3 -->
+      <a-cylinder id="stage3" material="color: #737373" ammo-body="type: static"
+        ammo-shape="sphereRadius: NaN; type: cylinder; fit: manual; halfExtents: 5 5 5" geometry="radius: 5"
+        position="-20 0 -20">
+        <a-box id="link3" add_to_cart="name: car3; product_id: carproductid3; price: 999999" rotation="0 45 0"
+          scale="1 0.25 0.01" class="intersectable" mixin="green cube hoverColor selectColor leaveColor"
+          position="-1.60556 1.78 1.92991">
+          <a-entity id="text3" scale="5 6 0.00001" position="0 -0.6 1"
+            text="value: ADD TO \n CART; color: #000000; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/aladin/Aladin-Regular.json;; anchor: align; baseline: bottom; letterSpacing: 1; wrapPixels: 0; yOffset: 0; xOffset: -0.001; zOffset: 0; align: center">
+          </a-entity>
+        </a-box>
+      </a-cylinder>
+      <!-- 4 -->
+      <a-cylinder id="stage4" material="color: #737373" ammo-body="type: static"
+        ammo-shape="sphereRadius: NaN; type: cylinder; fit: manual; halfExtents: 5 5 5" geometry="radius: 5"
+        position="20 0 0">
+        <a-box id="link4" add_to_cart="name: car4; product_id: carproductid4; price: 999999" rotation="0 -90 0"
+          scale="1 0.25 0.01" class="intersectable" mixin="green cube hoverColor selectColor leaveColor"
+          position="-0.96144 1.78 -2.88494">
+          <a-entity id="text4" scale="5 6 0.00001" position="0 -0.6 1"
+            text="value: ADD TO \n CART; color: #000000; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/aladin/Aladin-Regular.json;; anchor: align; baseline: bottom; letterSpacing: 1; wrapPixels: 0; yOffset: 0; xOffset: -0.001; zOffset: 0; align: center">
+          </a-entity>
+        </a-box>
+      </a-cylinder>
+      <!-- 5 -->
+      <a-cylinder id="stage5" material="color: #737373" ammo-body="type: static"
+        ammo-shape="sphereRadius: NaN; type: cylinder; fit: manual; halfExtents: 5 5 5" geometry="radius: 5"
+        position="-20 0 0">
+        <a-box id="link5" add_to_cart="name: car5; product_id: carproductid5; price: 999999" rotation="0 90 0"
+          scale="1 0.25 0.01" class="intersectable" mixin="green cube hoverColor selectColor leaveColor"
+          position="1.541 1.78 2.568">
+          <a-entity id="text5" scale="5 6 0.00001" position="0 -0.6 1"
+            text="value: ADD TO \n CART; color: #000000; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/aladin/Aladin-Regular.json;; anchor: align; baseline: bottom; letterSpacing: 1; wrapPixels: 0; yOffset: 0; xOffset: -0.001; zOffset: 0; align: center">
+          </a-entity>
+        </a-box>
+      </a-cylinder>
+      <!-- 6 -->
+      <a-cylinder id="stage6" material="color: #737373" ammo-body="type: static"
+        ammo-shape="sphereRadius: NaN; type: cylinder; fit: manual; halfExtents: 5 5 5" geometry="radius: 5"
+        position="20 0 20">
+        <a-box id="link6" add_to_cart="name: car6; product_id: carproductid6; price: 999999" rotation="0 -135 0"
+          scale="1 0.25 0.01" class="intersectable" mixin="green cube hoverColor selectColor leaveColor"
+          position="1.32783 1.78 -2.55442">
+          <a-entity id="text6" scale="5 6 0.00001" position="0 -0.6 1"
+            text="value: ADD TO \n CART; color: #000000; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/aladin/Aladin-Regular.json;; anchor: align; baseline: bottom; letterSpacing: 1; wrapPixels: 0; yOffset: 0; xOffset: -0.001; zOffset: 0; align: center">
+          </a-entity>
+        </a-box>
+      </a-cylinder>
+      <!-- 7 -->
+      <a-cylinder id="stage7" material="color: #737373" ammo-body="type: static"
+        ammo-shape="sphereRadius: NaN; type: cylinder; fit: manual; halfExtents: 5 5 5" geometry="radius: 5"
+        position="0 0 20">
+        <a-box id="link7" add_to_cart="name: car7; product_id: carproductid7; price: 999999" rotation="0 180 0"
+          scale="1 0.25 0.01" class="intersectable" mixin="green cube hoverColor selectColor leaveColor"
+          position="3.40687 1.78 -1.04924">
+          <a-entity id="text7" scale="5 6 0.00001" position="0 -0.6 1"
+            text="value: ADD TO \n CART; color: #000000; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/aladin/Aladin-Regular.json;; anchor: align; baseline: bottom; letterSpacing: 1; wrapPixels: 0; yOffset: 0; xOffset: -0.001; zOffset: 0; align: center">
+          </a-entity>
+        </a-box>
+      </a-cylinder>
+      <!-- 8 -->
+      <a-cylinder id="stage8" material="color: #737373" ammo-body="type: static"
+        ammo-shape="sphereRadius: NaN; type: cylinder; fit: manual; halfExtents: 5 5 5" geometry="radius: 5"
+        position="-20 0 20">
+        <a-box id="link8" add_to_cart="name: car8; product_id: carproductid8; price: 999999" rotation="0 135 0"
+          scale="1 0.25 0.01" class="intersectable" mixin="green cube hoverColor selectColor leaveColor"
+          position="2.63434 1.78 1.76642">
+          <a-entity id="text8" scale="5 6 0.00001" position="0 -0.6 1"
+            text="value: ADD TO \n CART; color: #000000; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/aladin/Aladin-Regular.json;; anchor: align; baseline: bottom; letterSpacing: 1; wrapPixels: 0; yOffset: 0; xOffset: -0.001; zOffset: 0; align: center">
+          </a-entity>
+        </a-box>
+      </a-cylinder>
+    </a-entity>
+
+    <!-- car -->
+    <a-entity id="CAR">
+      <a-entity id="car1" loader="model_id: #car1" rotation="0 -45 0" ammo-body="type: kinematic" position="20 0.25 -20"
+        scale="25 25 25" gltf-model="assets\alfa_romeo_stradale_1967/scene.gltf">
+      </a-entity>
+      <a-entity id="car2" loader="model_id: #car2" rotation="0 0 0" ammo-body="type: kinematic"
+        position="-5 -0.94298 -22.5" scale="3 3 3" gltf-model="assets\honda_integra_type-r_db8/scene.gltf"></a-entity>
+      <a-entity id="car3" loader="model_id: #car3" rotation="0.01 -135 0" ammo-body="type: kinematic"
+        position="-21.25 1.56173 -18.99" scale="0.9 0.9 0.9"
+        gltf-model="assets\2021_lamborghini_countach_lpi_800-4/scene.gltf"></a-entity>
+      <a-entity id="car4" loader="model_id: #car4" rotation="0 -90 0" ammo-body="type: kinematic"
+        position="20 0.48464 0" scale="2 2 2" gltf-model="assets\derby_car._free/scene.gltf"></a-entity>
+      <a-entity id="car5" loader="model_id: #car5" rotation="0 90 0" ammo-body="type: kinematic"
+        position="-22.58 4.024 4.79" scale="3 3 3" gltf-model="assets\mazda_rx-7_fd/scene.gltf"></a-entity>
+      <a-entity id="car6" loader="model_id: #car6" rotation="0 135 0" ammo-body="type: kinematic"
+        position="-20 0.54563 20" scale="1.8 1.8 1.8"
+        gltf-model="assets\pagani_huayra-bc__metallic_beryllium_orange/scene.gltf"></a-entity>
+      <a-entity id="car7" loader="model_id: #car7" rotation="0 -135 0" ammo-body="type: kinematic"
+        position="21.6 -1.03254 21.87" scale="3 3 3" gltf-model="assets\ferrari_testarossa/scene.gltf"></a-entity>
+      <a-entity id="car8" loader="model_id: #car8" rotation="0 180 0" ammo-body="type: kinematic"
+        position="0 -1.09727 22.5" scale="3 3 3" gltf-model="assets\honda_nsx_1990/scene.gltf"></a-entity>
+    </a-entity>
+
+    <!-- sphere -->
+    <!-- <a-sphere id="updateMe" color="red" ammo-body="type: dynamic" ammo-shape="type: sphere; sphereRadius: NaN"
+      position="4.58712 17.192 -5.23586" rotation="-50.353643569519285 -46.274832148062806 110.75951297387289"
+      scale="2 2 2"></a-sphere>
+    <a-sphere id="upe" color="red" ammo-body="type: dynamic" ammo-shape="type: sphere; sphereRadius: NaN"
+      position="4.5689 6.86328 -5.03086" rotation="-31.603698802872326 -32.72448539294092 -173.3319852128221"
+      scale="2 2 2"></a-sphere>
+    <a-cylinder id="cyl" ammo-body="type: static; emitCollisionEvents: true;"
+      ammo-shape="type: cylinder; sphereRadius: NaN" collision-wire="element: cam" position="0 1 -1" radius="1"
+      height="3" color="orange"></a-cylinder>
+    <a-entity id="LINK">
+      <a-box id="link1" scale="1 0.25 0.01" class="intersectable" mixin="green cube hoverColor selectColor leaveColor"
+        position="1.541 1.78 2.568" link="">
+        <a-entity id="text1" scale="5 6 0.00001" position="0 -0.6 1"
+          text="value: ADD TO \n       CART; color: #000000; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/aladin/Aladin-Regular.json;; anchor: align; baseline: bottom; letterSpacing: 1; wrapPixels: 0; yOffset: 0; xOffset: -0.001; zOffset: 0; align: center">
+        </a-entity>
+      </a-box>
+    </a-entity> -->
+  </a-scene>
+</body>
+
+</html>

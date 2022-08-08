@@ -1,0 +1,11 @@
+Model Information:
+* title:	Pagani Huayra-BC | Metallic Beryllium Orange |
+* source:	https://sketchfab.com/3d-models/pagani-huayra-bc-metallic-beryllium-orange-f3a4774883284e748b9081d2b2c60ed5
+* author:	Abhay Singh (https://sketchfab.com/AbhayS)
+
+Model License:
+* license type:	CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
+* requirements:	Author must be credited. Modified versions must have the same license. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Pagani Huayra-BC | Metallic Beryllium Orange |" (https://sketchfab.com/3d-models/pagani-huayra-bc-metallic-beryllium-orange-f3a4774883284e748b9081d2b2c60ed5) by Abhay Singh (https://sketchfab.com/AbhayS) licensed under CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)

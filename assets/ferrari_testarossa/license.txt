@@ -1,0 +1,11 @@
+Model Information:
+* title:	Ferrari Testarossa
+* source:	https://sketchfab.com/3d-models/ferrari-testarossa-82b38bec977044be82822ce598abafc6
+* author:	Lexyc16 (https://sketchfab.com/Lexyc16)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Ferrari Testarossa" (https://sketchfab.com/3d-models/ferrari-testarossa-82b38bec977044be82822ce598abafc6) by Lexyc16 (https://sketchfab.com/Lexyc16) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

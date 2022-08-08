@@ -1,0 +1,11 @@
+Model Information:
+* title:	Alfa Romeo Stradale 1967
+* source:	https://sketchfab.com/3d-models/alfa-romeo-stradale-1967-fbb6adc7a6e84c3db6969e1debcd364b
+* author:	Ipatov Kirill (https://sketchfab.com/nesya100)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Alfa Romeo Stradale 1967" (https://sketchfab.com/3d-models/alfa-romeo-stradale-1967-fbb6adc7a6e84c3db6969e1debcd364b) by Ipatov Kirill (https://sketchfab.com/nesya100) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

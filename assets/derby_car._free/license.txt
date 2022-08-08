@@ -1,0 +1,11 @@
+Model Information:
+* title:	Derby car. Free
+* source:	https://sketchfab.com/3d-models/derby-car-free-30331d8e1355492f8be6ec7bb5b556bc
+* author:	FelikinRuslan (https://sketchfab.com/FelikinRuslan)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Derby car. Free" (https://sketchfab.com/3d-models/derby-car-free-30331d8e1355492f8be6ec7bb5b556bc) by FelikinRuslan (https://sketchfab.com/FelikinRuslan) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
