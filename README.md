@@ -1,7 +1,7 @@
 # MetaCommerce Website
 Meta-Creativity a web-based Metaverse using out of the box Avatar generation tool for users to enter and experience
 
-<b>Deployed on</br> https://majestic-kitsune-23701c.netlify.app/
+<b>Deployed on</br> https://velvety-croissant-4dd6f9.netlify.app
 
 CREDITS-Nitu Kumari
 
